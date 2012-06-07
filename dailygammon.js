@@ -80,6 +80,13 @@ function dailyGammonTools(e) {
         var match = /There are no matches where you can move\./.exec(getHtml('/html/body'));
         if (match) {
             window.setTimeout('document.location=\'/bg/top\'',5000);
+        } else {
+            var aList = find("//a", XPList);
+            for (ass = 1; ass < aList.snapshotLength; ass++) {
+                if (aList.snapshotItem(ass).innerHTML == "Play") {
+                    document.location=aList.snapshotItem(ass).href;
+                }
+            }
         }
     }
 
