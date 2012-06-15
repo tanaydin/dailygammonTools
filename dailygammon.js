@@ -82,8 +82,6 @@ function dailyGammonTools(e) {
             window.setTimeout('document.location=\'/bg/top\'',5000);
         } else {
             var aList = find("//a", XPList);
-            console.clear();
-            console.log(aList.snapshotLength);
             if (aList.snapshotLength == 21) {
                 for (ass = 1; ass < aList.snapshotLength; ass++) {
                     if (aList.snapshotItem(ass).innerHTML == "Play") {
