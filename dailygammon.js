@@ -17,9 +17,11 @@ function dailyGammonTools(e) {
     var XPIterate = XPathResult.UNORDERED_NODE_ITERATOR_TYPE;
 
     function find(xpath, xpres, startnode) {
-        if (!startnode) startnode = document;
+        if (!startnode) {
+            startnode = document;
+        }
         var ret = document.evaluate(xpath, startnode, null, xpres, null);
-        return xpres == XPFirst ? ret.singleNodeValue : ret;
+        return xpres === XPFirst ? ret.singleNodeValue : ret;
     }
     function getHtml(xpath) {
         var retval = false;
@@ -32,16 +34,18 @@ function dailyGammonTools(e) {
     function setCookie(c_name,value,expiredays) {
         var exdate=new Date();
         exdate.setDate(exdate.getDate()+expiredays);
-        document.cookie=c_name+ "=" +escape(value)+
-            ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+        document.cookie=c_name+ "=" + encodeURI(value)+
+            ((expiredays===null) ? "" : ";expires="+exdate.toGMTString());
     }
     function getCookie(c_name) {
         if (document.cookie.length>0) {
             c_start=document.cookie.indexOf(c_name + "=");
-            if (c_start!=-1) {
+            if (c_start!==-1) {
                 c_start=c_start + c_name.length+1;
                 c_end=document.cookie.indexOf(";",c_start);
-                if (c_end==-1) c_end=document.cookie.length;
+                if (c_end===-1) {
+                    c_end=document.cookie.length;
+                }
                 return unescape(document.cookie.substring(c_start,c_end));
             }
         }
@@ -49,7 +53,9 @@ function dailyGammonTools(e) {
     }
     function getNick() {
         var match = /Welcome to DailyGammon, (.*?)\./i.exec(getHtml('/html/body/h2'));
-        if (match) setCookie('dgUserName',match[1],365);
+        if (match) {
+            setCookie('dgUserName',match[1],365);
+        }
         checkAvaibleGame();
     }
     function getDarkerColor(h) {
@@ -58,11 +64,15 @@ function dailyGammonTools(e) {
         var B = parseInt((cutHex(h)).substring(4,6),16) - 48;
         return RGBtoHex(R,G,B);
     }
-    function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
-    function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
+    function cutHex(h) {return (h.charAt(0)==="#") ? h.substring(1,7):h;}
+    function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B);}
     function toHex(N) {
-        if (N==null) return "00";
-        N=parseInt(N); if (N==0 || isNaN(N)) return "00";
+        if (N===null) {
+            return "00";
+        }
+        N=parseInt(N); if (N===0 || isNaN(N)) {
+            return "00";
+        }
         N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
         return "0123456789ABCDEF".charAt((N-N%16)/16) + "0123456789ABCDEF".charAt(N%16);
     }
@@ -79,7 +89,9 @@ function dailyGammonTools(e) {
     function checkAvaibleGame() {
         var match = /There are no matches where you can move\./.exec(getHtml('/html/body'));
         if (match) {
-            window.setTimeout('document.location=\'/bg/top\'',5000);
+            window.setTimeout(function() {
+                document.location='/bg/top';
+            },5000);
         } else {
             var aList = find("//a", XPList);
             if (aList.snapshotLength == 21) {
