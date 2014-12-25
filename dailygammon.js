@@ -39,14 +39,14 @@ function dailyGammonTools(e) {
     }
     function getCookie(c_name) {
         if (document.cookie.length>0) {
-            c_start=document.cookie.indexOf(c_name + "=");
+            var c_start=document.cookie.indexOf(c_name + "=");
             if (c_start!==-1) {
                 c_start=c_start + c_name.length+1;
-                c_end=document.cookie.indexOf(";",c_start);
+                var c_end=document.cookie.indexOf(";",c_start);
                 if (c_end===-1) {
                     c_end=document.cookie.length;
                 }
-                return unescape(document.cookie.substring(c_start,c_end));
+                return decodeURIComponent(document.cookie.substring(c_start,c_end));
             }
         }
         return "";
@@ -79,7 +79,7 @@ function dailyGammonTools(e) {
     function colorizeNick() {
         var nicktds = find("//td", XPList);
         var nickPattern = new RegExp(getCookie('dgUserName'));
-        for (tds = 1; tds < nicktds.snapshotLength; tds++) {
+        for (var tds = 1; tds < nicktds.snapshotLength; tds++) {
             if (nickPattern.exec(nicktds.snapshotItem(tds).firstChild.innerHTML)) {
                 nicktds.snapshotItem(tds).bgColor = getDarkerColor(document.bgColor);
             }
@@ -94,9 +94,9 @@ function dailyGammonTools(e) {
             },5000);
         } else {
             var aList = find("//a", XPList);
-            if (aList.snapshotLength == 21) {
-                for (ass = 1; ass < aList.snapshotLength; ass++) {
-                    if (aList.snapshotItem(ass).innerHTML == "Play") {
+            if (aList.snapshotLength === 21) {
+                for (var ass = 1; ass < aList.snapshotLength; ass++) {
+                    if (aList.snapshotItem(ass).innerHTML === "Play") {
                         document.location=aList.snapshotItem(ass).href;
                     }
                 }
